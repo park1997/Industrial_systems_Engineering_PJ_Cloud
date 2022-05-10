@@ -96,7 +96,6 @@ async def search(request : Request, query : str):
         url = "https://www.law.go.kr/precInfoP.do?mode=0&precSeq={}&vSct=*".format(id_[0])
         idx_ = info_df[info_df['ID'] == id_[0]].index[0]
         p_url.append([info_df.iloc[idx_]["이유"][:30]+"...",url])
-    
     # 관련 법
     related_law = []
     for i in sorted_cosine_dic[0:11]:
