@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/mvp.css" rel="stylesheet"/>
+    <style>
+        header{
+            background-color : orange;
+            height:100px
+        }
+        main{
+            width:100%;
+            height:80%;
+        }
+
+    </style>
+    <title>{{title}}</title>
+</head>
+<body>
+    <header>
+        <h1>{{ subject }}</h1>
+    </header>
+
+    <center>
+        {% if p_url %}
+        <form id = "search_form" action = "/search">
+            <textarea cols="80" rows="10" type = "search" id="search_input" name="query">{{query}}</textarea>
+            <button type="submit">검색</button>
+        </form>
+        {% else %}
+        <form id = "search_form" action = "/search">
+            <textarea cols="80" rows="10" type = "search" placeholder="사건 내용을 입력해 주세요" id="search_input" name="query"></textarea>
+            <!-- <input type = "search" placeholder="사건 내용" id="search_input" name="q"> -->
+            <button type="submit">검색</button>
+        </form>
+        {% endif %}
+    </center><br>
+
+    <main>
+        {% if p_url %}
+        <article>
+            <div style = "border: 4px dashed rgb(251, 113, 58);">
+                <!-- <h3>법률용어 자동 변환</h3> -->
+                <label style = "color:orange; font-size:20px">법률용어 자동 변환</label>
+                <p>{{input_data}}</p>
+                <ul>
+                    {% for lto1, lto2 in law_to_original%}
+                        <li>{{ lto1 }} => {{ lto2 }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </article><br>
+
+
+        <section>
+            <div style="width:35%; height:auto; border:3px dashed rgb(251, 113, 58); float:left; margin-right:10px;">
+                <label style = "color:orange; font-size:20px">유사 판례</label>
+                <ol type="I">
+                    {% for p_str,p_u in p_url%}
+                        <li>
+                            <a href="{{ p_u }}">{{p_str}}</a>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+
+
+            <div style="width:62%; height:auto; border:3px dashed rgb(251, 113, 58); float:left;">
+                <label style = "color:orange; font-size:20px">관련 법 조항</label>
+                <ul>
+                    {% for rl in related_law%}
+                        <li>{{ rl }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section><br>
+
+
+        <article>
+            <div style = "border: 3px dashed rgb(251, 113, 58);">
+                <label style = "color:orange; font-size:20px">예상 기각여부</label>
+                <ul>
+                    {% for vl1, vl2 in verdict_list%}
+                        <li>{{ vl1 }}</li>
+                        <strong style="color:orangered">{{ vl2 }}</strong>
+                        <br>
+                    {% endfor %}
+                </ul>
+
+                <strong style="color:rgb(106, 236, 19)">
+                    {% for vr in verdict_result%}
+                    <p>{{ vr }}</p>
+                    {% endfor %}
+                </strong>
+            </div>
+        </article><br>
+
+
+        <article>
+            <div style = "width:50%; height:auto; border: 4px dashed rgb(251, 113, 58); float: left">
+                <label class = "cos" style = "color:orange; font-size:20px">유사 판례 네트워크(Cosine Similarity)</label>
+                <!-- <img class="cos" src="../static/network_img.jpg" alt="Cosine Similarity Law" width="480" height="510"/> -->
+                <img src= {{ url_for('static', path = '/network_img.jpg') }} alt="Cosine Similarity Law" width="480" height="510"/>
+            </div>
+            <div style = "width:47%; height:auto; border: 4px dashed rgb(251, 113, 58); float:right">
+                <label class = "wordcloud" style = "color:orange; font-size:20px">워드 클라우드</label>
+                <!-- <img class="wordcloud" src="../static/4cluster.png" alt="Cosine Similarity Law" width="100%" height="100%"/> -->
+                <img src= {{ url_for('static', path = '/4cluster.png') }} alt="Cosine Similarity Law" width="100%" height="100%"/>
+            </div>
+        </article>
+        
+
+
+        {% else %}
+        <center>
+            <h3 style="color: gray">Please Input Keyword...</h3>
+        </center>
+        {% endif %}
+
+    </main>
+</body>
+</html>
