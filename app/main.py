@@ -20,7 +20,6 @@ app.mount(str(BASE_DIR/"static"), StaticFiles(directory=BASE_DIR/"static"), name
 templates = Jinja2Templates(directory=str(BASE_DIR/"templates"))
 
 
-
 info_df = pd.read_excel(BASE_DIR/"data/budongsan.xlsx",engine='openpyxl')
 info2_df = pd.read_excel(BASE_DIR/"data/estate2.xlsx",engine='openpyxl')
 df_mapping = pd.read_excel(BASE_DIR/"data/wordmapping.xlsx",engine='openpyxl')
@@ -35,7 +34,6 @@ def tokenizer(raw_texts, pos=["Noun","Alpha","Verb","Number"], stop_words=list(s
         if noun not in stop_words and len(noun)>1:
             nouns.append(noun)
     return nouns
-
 
 
 @app.get('/') 
@@ -195,8 +193,6 @@ async def search(request : Request, query : str):
                                                     "input_data": input_data,
                                                     "query": query,
                                                     })
-
-
 
 @app.get("/items/{id}", response_class=HTMLResponse) 
 async def read_item(request: Request, id: str): 
